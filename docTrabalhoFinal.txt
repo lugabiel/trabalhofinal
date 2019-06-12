@@ -1,4 +1,7 @@
 Trabalho Final - Computação Evolucionária
 
+Problema das P-medianas
+
 Luiz Gabriel Aragão
-Pedro Ian Mota
+Pedro Ian Mota 
+
