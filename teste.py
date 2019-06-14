@@ -14,7 +14,6 @@ class cliente(object):
     def __init__(self):
         self.pos = []
 
-
 class populacao(object):
     def __init__(self, c = cliente(), tam = 5):
         self.upa = []
