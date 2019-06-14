@@ -57,6 +57,7 @@ with open('pmedian324.txt','r') as csvfile:
 
 
 
+
 plt.scatter(c.x,c.y, label = 'Bairros',marker = '+')
 plt.xlabel('x')
 plt.ylabel('y')
