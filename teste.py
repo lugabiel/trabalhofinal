@@ -15,7 +15,7 @@ class cliente(object):
         self.pos = []
 
 class conjuntoUPAs(object):
-    def __init__(self v = []):
+    def __init__(self, v = []):
         self.bairro = v
         self.fit = 10000
     pass
@@ -49,26 +49,26 @@ class populacao(object):
                 fit += min
             j.fit = fit
 c = cliente()
+x = []
+y = []
+
 
 
 with open('pmedian324.txt','r') as csvfile:
     plots = csv.reader(csvfile, delimiter = ' ')
     for linha in plots:
         c.pos.append(bairro(int(linha[0]), int(linha[1])))
+        x.append(int(linha[0]))
+        y.append(int(linha[1]))
 
-
-
-
-
-plt.scatter(c.x,c.y, label = 'Bairros',marker = '+')
+plt.scatter(x, y, label = 'Bairros',marker = '+')
 plt.xlabel('x')
 plt.ylabel('y')
 
-#plt.xticks(x)
-#plt.yticks(y)
-
-
-plt.Artist()
 plt.title('Distribuição de Bairros')
 plt.legend()
 plt.show()
+
+pop = populacao(c)
+
+while 
