@@ -41,23 +41,19 @@ class conjuntoUPAs(object):
         if len(self.bairrosUPAs.bairros) > 10:
             self.fit = dist
             return
-        print(len(self.bairrosUPAs.bairros))
         for i in m.bairros:
             dist = 10000
             for k in self.bairrosUPAs.bairros:
                 if k.distancia(i) < dist:
                     dist = k.distancia(i)
             fit += dist
-        print("fim de um fitness", len(m.bairros), len(self.bairrosUPAs.bairros))
         self.fit = fit
-
 
 
 
 class populacao(object):
     def __init__(self, m = mapa(), tam = 5):
         self.upas = [] #lista de ponteiros para objetos conjuntoUPAs
-        self.selecao = [] #quais upas estao selecionadas para cada mapa
         solucao = mapa()
         self.m = m
         self.tam = tam
@@ -74,39 +70,36 @@ class populacao(object):
         upas = []
         upas = sorted(self.upas, key = lambda x: x.fit)
         upasFilho = []
-        print("upas 1 - ",len(upas))
         for i in upas:
             for k in self.upas:
                 upasFilho.append(self.transa(i, k))
         upasFilho = sorted(upasFilho, key = lambda y: y.fit)
-        print("fim de uma atualiação", len(upasFilho), "-----------------------")
         self.upas = []
         for i in range(self.tam):
             self.upas.append(upasFilho[i])
-        print("upas 2 - ", len(upas))
+            print(upasFilho[i].fit)
 
     def transa(self, c1 = conjuntoUPAs(), c2 = conjuntoUPAs()):
-        filho = conjuntoUPAs()
-        filho.bairrosUPAs.bairros = []
+        map = mapa()
         tam1 = len(c1.bairrosUPAs.bairros)
         tam2 = len(c2.bairrosUPAs.bairros)
         if tam1 != tam2 or tam1 == 0:
             for i in range(self.tam):
-                filho.bairrosUPAs.add(self.m.bairros[rin(0,len(self.m.bairros) - 1)])
+                map.add(self.m.bairros[rin(0,len(self.m.bairros) - 1)])
+            filho = conjuntoUPAs(map)
             filho.fitness(self.m)
             return filho
         else:
             for i in range(self.tam):
-                if rin(0,1) > 0.9:
-                    filho.bairrosUPAs.add(c1.bairrosUPAs.bairros[i])
+                if rin(0,1) > 0.8:
+                    map.add(self.m.bairros[rin(0,len(self.m.bairros) - 1)])
+                elif rin(0,1) > 0.9:
+                    map.add(c1.bairrosUPAs.bairros[i])
                 else:
-                    filho.bairrosUPAs.add(c2.bairrosUPAs.bairros[i])
-            print("fim de uma transa", len(self.m.bairros), len(c1.bairrosUPAs.bairros))
-            print("filho",len(filho.bairrosUPAs.bairros))
+                    map.add(c2.bairrosUPAs.bairros[i])
+        filho = conjuntoUPAs(map)
         filho.fitness(self.m)
         return filho
-
-
 
 m = mapa()
 x = []
@@ -132,15 +125,15 @@ plt.show()
 
 pop = populacao(m, 5)
 for k in range(10):
-#    upax = []
-#    upay = []
-#    for i in pop.upas[0].bairrosUPAs.bairros:
-#        upax.append(i.x)
-#        upay.append(i.y)
+    upax = []
+    upay = []
+    for i in pop.upas[0].bairrosUPAs.bairros:
+        upax.append(i.x)
+        upay.append(i.y)
     pop.atualiza()
-#    plt.scatter(upax, upay, label = 'UPAs',marker = 'o')
-#    plt.draw()
-#    plt.scatter(x, y, label = 'Bairros',marker = '*')
-#    plt.draw()
-#    plt.show()
+    plt.scatter(upax, upay, label = 'UPAs',marker = 'o')
+    plt.draw()
+    plt.scatter(x, y, label = 'Bairros',marker = '*')
+    plt.draw()
+    plt.show()
     time.sleep(1)
