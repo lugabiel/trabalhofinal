@@ -38,7 +38,7 @@ class conjuntoUPAs(object):
     def fitness(self, m = mapa()):
         fit = 0
         dist = 10000
-        if len(self.bairrosUPAs.bairros) > 10:
+        if len(self.bairrosUPAs.bairros) > 5:
             self.fit = dist
             return
         for i in m.bairros:
@@ -52,13 +52,14 @@ class conjuntoUPAs(object):
 
 
 class populacao(object):
-    def __init__(self, m = mapa(), tam = 5):
+    def __init__(self, m = mapa(), tamUPAs = 5, tamPop = 5):
         self.upas = [] #lista de ponteiros para objetos conjuntoUPAs
         solucao = mapa()
         self.m = m
-        self.tam = tam
-        for j in range(tam):
-            for i in range(5):
+        self.tamUPAs = tamUPAs
+        self.tamPop = tamPop
+        for j in range(self.tamPop):
+            for i in range(self.tamUPAs):
                 solucao.add(self.m.bairros[rin(0,len(self.m.bairros) - 1)])
             temp = conjuntoUPAs(solucao)
             solucao = mapa()
@@ -73,27 +74,29 @@ class populacao(object):
         for i in upas:
             for k in self.upas:
                 upasFilho.append(self.transa(i, k))
+            upasFilho.append(i)
         upasFilho = sorted(upasFilho, key = lambda y: y.fit)
         self.upas = []
-        for i in range(self.tam):
+        for i in range(self.tamPop):
             self.upas.append(upasFilho[i])
             print(upasFilho[i].fit)
+        print("--------")
 
     def transa(self, c1 = conjuntoUPAs(), c2 = conjuntoUPAs()):
         map = mapa()
         tam1 = len(c1.bairrosUPAs.bairros)
         tam2 = len(c2.bairrosUPAs.bairros)
         if tam1 != tam2 or tam1 == 0:
-            for i in range(self.tam):
+            for i in range(self.tamUPAs):
                 map.add(self.m.bairros[rin(0,len(self.m.bairros) - 1)])
             filho = conjuntoUPAs(map)
             filho.fitness(self.m)
             return filho
         else:
-            for i in range(self.tam):
-                if rin(0,1) > 0.8:
+            for i in range(self.tamUPAs):
+                if rin(0,1) > 0.85:
                     map.add(self.m.bairros[rin(0,len(self.m.bairros) - 1)])
-                elif rin(0,1) > 0.9:
+                elif rin(0,1) > 0.5:
                     map.add(c1.bairrosUPAs.bairros[i])
                 else:
                     map.add(c2.bairrosUPAs.bairros[i])
@@ -123,7 +126,7 @@ plt.legend()
 plt.draw()
 plt.show()
 
-pop = populacao(m, 5)
+pop = populacao(m, 5, 50) #(mapa de bairros, número de UPAs por solução, número de soluções)
 for k in range(10):
     upax = []
     upay = []
